@@ -17,7 +17,7 @@ function page() {
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-28 text-white capitalize">
+    <main className="flex min-h-screen flex-col items-center justify-between p-14 text-white capitalize">
       <div className='bg-slate-700 h-[550px] w-[400px] rounded-lg shadow-md shadow-slate-900 flex flex-col justify-between items-center'>
         <div className='m-2 flex justify-between'>
 
@@ -35,6 +35,7 @@ function page() {
               name="UserType"
               value="nongovt"
               onChange={(e) => setUserType(e.target.value)}
+              className='m-3'
             />
             nongovt
             <input
@@ -42,12 +43,13 @@ function page() {
               name="UserType"
               value="civillian"
               onChange={(e) => setUserType(e.target.value)}
+              className='m-3'
             />
             Civillian
           </div>
 
         </div>
-        <div className='p-5'>
+        <div className='p-2 mt-5'>
           <h1 className='text-base'>sign up</h1>
         </div>
         {userType == 'govt' ? 
@@ -67,8 +69,8 @@ function page() {
         </div>
         {userType == 'civillian'?
            <div className='mt-1 flex flex-col'>
-           <label htmlFor="password">Enter aadhar enrolled phone number</label>
-           <input type="password" placeholder='Enter phone number' className='bg-slate-900 rounded-md border-white p-1' />
+           <label htmlFor="password">Aadhar enrolled ph no.</label>
+           <input type="password" placeholder='Enter phone number' className='bg-slate-900 rounded-md border-white p-1 mb-2' />
          </div>
          : null  
       }
