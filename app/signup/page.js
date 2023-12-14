@@ -206,7 +206,7 @@ function page() {
                   htmlFor="default-radio-1"
                   className="ms-2 text-sm font-medium text-black"
                 >
-                  government
+                  Government
                 </label>
               </div>
               <div className="flex items-center">
