@@ -38,7 +38,7 @@ export default function Home() {
           </h1>
           <div className='felx flex-row text-black'>
             <button onClick={() => router.push("/signup")} className='w-28 text-base bg-lime-400 p-2 rounded m-3 hover:bg-zinc-100 hover:text-orange-600 hover:transition-all hover:ease-in-out hover:scale-110 hover:translate-x-2'>Sign Up</button>
-            <button onClick={() => router.push("/")} className='w-28 text-base bg-lime-400 p-2 rounded m-3 hover:bg-zinc-100 hover:text-orange-600 hover:transition-all hover:ease-in-out hover:scale-110 hover:translate-x-2'>Log In</button>
+            <button onClick={() => router.push("/login")} className='w-28 text-base bg-lime-400 p-2 rounded m-3 hover:bg-zinc-100 hover:text-orange-600 hover:transition-all hover:ease-in-out hover:scale-110 hover:translate-x-2'>Log In</button>
           </div>
 
 
