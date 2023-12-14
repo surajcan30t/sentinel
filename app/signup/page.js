@@ -1,94 +1,245 @@
-'use client'
-import React ,{useState} from 'react'
-import Link from 'next/link'
+"use client";
+import React, { useState } from "react";
+import Link from "next/link";
 
 function page() {
-  const [userType, setUserType] = useState("");
+  const [value, setValue] = useState({
+    licenseNo: "",
+    orgName: "",
+    orgType:"",
+    noOfTeams: "",
+    noOfMembers: "",
+    areaofActivity: "",
+    StationAddress: "",
+    password: "",
+    equipments: "",
+    token:""
+  });
 
-  const handleSubmit = (e) => {
-    if (userType == "govt" && secretKey != "govtndrf1440") {
-      e.preventDefault();
-      alert("Invalid Admin");
-    } else {
-      e.preventDefault();
+
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setValue((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+        setLoading(true);
+      const res = await fetch("http://192.168.208.1:8080/api/org/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          licenseNo: value.licenseNo,
+          orgName: value.orgName,
+          orgType:value.orgType,
+          noOfTeams: value.noOfTeams,
+          noOfMembers: value.noOfMembers,
+          areaofActivity: value.areaofActivity,
+          StationAddress: value.StationAddress,
+          password:value.password,
+          equipments:value.equipments,
+          token:'abczy'
+          }),
+      });
+
+      if (res.status === 200) {
+        setValue({
+          licenseNo: "",
+          orgName: "",
+          orgType:"",
+          noOfTeams: "",
+          noOfMembers: "",
+          areaofActivity: "",
+          StationAddress: "",
+          password: "",
+          equipments: "",
+
+        });
+        setStatus("success");
+        // router.push("/writeall");
+      } else {
+        setStatus("failed");
+      }
+    } catch (err) {
+      setStatus(err.message);
     }
-  }
-    
+    finally{
+        setLoading(false);
+    }
+  };
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-14 text-white capitalize">
-      <div className='bg-slate-700 h-[550px] w-[400px] rounded-lg shadow-md shadow-slate-900 flex flex-col justify-between items-center'>
-        <div className='m-2 flex justify-between'>
-
-        <div>
-            Register As<br/>
-            <input
-              type="radio"
-              name="UserType"
-              value="govt"
-              onChange={(e) => setUserType(e.target.value)}
-            />
-            govt
-            <input
-              type="radio"
-              name="UserType"
-              value="nongovt"
-              onChange={(e) => setUserType(e.target.value)}
-              className='m-3'
-            />
-            nongovt
-            <input
-              type="radio"
-              name="UserType"
-              value="civillian"
-              onChange={(e) => setUserType(e.target.value)}
-              className='m-3'
-            />
-            Civillian
+    <main className="flex min-h-screen flex-col items-center justify-between p-5 bg-gradient-to-r from-cyan-300 to-blue-400 text-black capitalize">
+      <div className="bg-[#DFF9EE] h-[500px] w-[450px] rounded-lg shadow-md shadow-slate-900 flex flex-col pl-6 pr-6">
+        <h1 className="mt-3 text-2xl text-center pr-[20px] text-[#3688F3]">
+          Registration
+        </h1>
+        <form className="mt-5" onSubmit={handleSubmit}>
+          <div className=" flex">
+            <div className="mt-2 flex flex-col w-[180px]">
+              <label htmlFor="License No" className="text-[15px]">
+                License No:
+              </label>
+              <input
+                type="number"
+                name="licenseNo"
+                placeholder="Enter your license No: "
+                value={value.licenseNo}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
+                required
+              />
+            </div>
+            <div className="mt-2 flex flex-col w-[180px] ml-6">
+              <label htmlFor="Organization Name" className="text-[15px]">
+                Organization Name:
+              </label>
+              <input
+                type="text"
+                name="orgName"
+                placeholder="Enter your Organization Name: "
+                value={value.orgName}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
+                required
+              />
+            </div>
           </div>
 
-        </div>
-        <div className='p-2 mt-5'>
-          <h1 className='text-base'>sign up</h1>
-        </div>
-        {userType == 'govt' ? 
-        <div>
-          <label htmlFor="email id">Enter secret key</label><br/>
-          <input type='text' placeholder='Enter your organization secret key' className='bg-slate-900 rounded-md border-white p-1'/>
-        </div>    :
-        null
-        }
-        <div className='mt-2 flex flex-col'>
-          <label htmlFor="email id">Email</label>
-          <input type="email" placeholder='Enter your email' className='bg-slate-900 rounded-md border-white p-1' />
-        </div>
-        <div className='mt-1 flex flex-col'>
-          <label htmlFor="password">Password</label>
-          <input type="password" placeholder='Enter a password' className='bg-slate-900 rounded-md border-white p-1' />
-        </div>
-        {userType == 'civillian'?
-           <div className='mt-1 flex flex-col'>
-           <label htmlFor="password">Aadhar enrolled ph no.</label>
-           <input type="password" placeholder='Enter phone number' className='bg-slate-900 rounded-md border-white p-1 mb-2' />
-         </div>
-         : null  
-      }
-        <div className=''>
-          <button type='submit' className='bg-blue-500 rounded-md p-2'>submit</button>
-        </div>
-        <div className=' flex-col text-center'>
-          <h1 className='text-base'>or</h1>
-          <button className='text-base bg-red-500 m-3 rounded-md p-2'>sign up with google</button>
-        </div>
-        <div className='mb-4 flex-col justify-center items-center text-center'>
-          <h1 className='text-base mb-4'>or</h1>
-          <h1>have an accout?</h1>
-          <Link href='/login'><u>log in</u></Link>
-        </div>
+          <div className=" flex">
+            <div className="mt-2 flex flex-col w-[180px] ">
+              <label htmlFor="Number of Teams" className="text-[15px]">
+                Number of Teams:
+              </label>
+              <input
+                type="number"
+                name="noOfTeams"
+                placeholder="Enter your Number of Teams: "
+                value={value.noOfTeams}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
+                required
+              />
+            </div>
+            <div className="mt-2 flex flex-col w-[180px] ml-6">
+              <label htmlFor="Number of Members" className="text-[15px]">
+                Number Of Members:
+              </label>
+              <input
+                type="number"
+                name="noOfMembers"
+                placeholder="Enter your Number of Members: "
+                value={value.noOfMembers}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
+                required
+              />
+            </div>
+          </div>
+          <div className=" flex">
+            <div className="mt-2 flex flex-col w-[180px]">
+              <label htmlFor="Area of Activity" className="text-[15px]">
+                Area of Activity:
+              </label>
+              <input
+                type="text"
+                name="areaofActivity"
+                placeholder="Area of Activity: "
+                value={value.areaofActivity}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
+                required
+              />
+            </div>
+            <div className="mt-2 flex flex-col w-[180px] ml-6">
+              <label htmlFor="EquipmentAvailable" className="text-[15px]">
+                Equipment Available:
+              </label>
+              <input
+                type="text"
+                name="equipments"
+                placeholder="Enter your EquipmentAvailable : "
+                value={value.equipments}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
+                required
+              />
+            </div>
+          </div>
+
+          <div className=" flex">
+            <div className="mt-2 flex flex-col w-[180px]">
+              <label htmlFor="StationAddress" className="text-[15px]">
+                Address:
+              </label>
+              <textarea
+                name="StationAddress"
+                placeholder="Enter your StationAddress : "
+                value={value.StationAddress}
+                onChange={handleChange}
+                className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none resize-none p-2  text-[12px] text-black"
+                required
+              />
+            </div>
+            <div className="mt-2 flex flex-col w-[180px] ml-6">
+              <h2 className="text-[15px] mb-3">Organisation Type</h2>
+              <div className="flex items-center mb-2">
+                <input
+                  id="default-radio-1"
+                  type="radio"
+                  value={value.orgType}
+                  onChange={handleChange}
+                  name="radio-button"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 "
+                />
+                <label
+                  htmlFor="default-radio-1"
+                  className="ms-2 text-sm font-medium text-black"
+                >
+                  Government
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="default-radio-2"
+                  type="radio"
+                  value={value.nonGovernmentType}
+                  onChange={handleChange}
+                  name="radio-button"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                />
+                <label
+                  htmlFor="default-radio-2"
+                  className="ms-2 text-sm font-medium text-black"
+                >
+                  Non-Government
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 text-center pr-[25px]">
+            <button
+              type="submit"
+              className="bg-[#3688F3] text-[#fff] text-[16px] rounded-md mt-2 p-2 px-14"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     </main>
-  )
+  );
 }
 
-export default page
+export default page;
