@@ -105,9 +105,9 @@ function page() {
               </label>
               <input
                 type="password"
-                name="orgName"
-                placeholder="Enter your Organization Name: "
-                value={value.orgName}
+                name="password"
+                placeholder="Enter your Passworde: "
+                value={value.password}
                 onChange={handleChange}
                 className="border-b-2 border-[#65D5FA] bg-[#DFF9EE] outline-none p-2 text-[12px] text-black"
                 required
